@@ -1,0 +1,27 @@
+                    PT. SENTRAKASI NIAGA
+                       NPWP: 67.541.640.2-607.000
+                  COMAL, Jl. Raya Banjiran, Purwoh
+               Banjiran, Kabupaten Pemalang, Jawa Tengah
+                       Telp : 6281 287650547
+------------------------------------------------------------
+Tanggal    : 15-05-2026          No. Transaksi : 11915042626160726
+Nama Toko  : MC MART             Kasir    : ANAN
+Alamat     :                     TOP      : 0.0
+                   RINCIAN PESANAN
+------------------------------------------------------------
+No/Qty   |  Nama Barang      |   Harga   |  Qty   |  Total
+------------------------------------------------------------
+1.  CL 350     Rp53.500  1    Rp53.500
+2.  CLEO 550   Rp6.125   34   Rp206.125
+    SUBTOTAL             Rp259.625
+------------------------------------------------------------
+                     TOTAL  =   Rp259.625
+     DPP  =   Rp233.298,40  (sudah termasuk PPN)
+     PPN  =   Rp 26.326,60
+------------------------------------------------------------
+     Jumlah yang harus dibayar
+                      Rp259.625
+     Lima Ratus Dua Puluh Sembilan Ribu Enam Ratus Dua Puluh Lima Rupiah
+------------------------------------------------------------
+                   Customer
+                 Toko MC MART
