@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplikasi Kasir Web</title>
+    <style>
+        body { font-family: monospace; background: #f7f7f7; }
+        .container { background: white; width: 380px; margin: 30px auto; padding: 18px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.09);}
+        pre { font-size: 13px; }
+        .form-row { margin-bottom: 5px; }
+        label { display:inline-block; width:90px;}
+        input[type='number'] { width: 60px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Aplikasi Kasir Web</h3>
+        <form method="post">
+            <div class="form-row">
+                <label>Item 1:</label>
+                <input name="item1" value="{{ items[0]['nama'] }}">
+                Qty: <input type="number" name="qty1" value="{{ items[0]['qty'] }}">
+            </div>
+            <div class="form-row">
+                <label>Item 2:</label>
+                <input name="item2" value="{{ items[1]['nama'] }}">
+                Qty: <input type="number" name="qty2" value="{{ items[1]['qty'] }}">
+            </div>
+            <button type="submit">Cetak Struk</button>
+        </form>
+        <hr>
+        <pre>
+PT. SENTRAKASI NIAGA
+   NPWP: 67.541.640.2-607.000
+COMAL, Jl. Raya Banjiran, Purwoh
+Banjiran, Kabupaten Pemalang, Jawa Tengah
+      Telp : 6281 287650547
+------------------------------------------------------------
+Tanggal    : 15-05-2026    No. Transaksi : 11915042626160726
+Nama Toko  : MC MART       Kasir    : ANAN
+Alamat     :               TOP      : 0.0
+              RINCIAN PESANAN
+------------------------------------------------------------
+No/Qty | Nama Barang   | Harga    | Qty | Total
+------------------------------------------------------------
+{% for idx, item in enumerate(items) -%}
+{{ idx+1 }}. {{ item['nama'] }}  Rp{{ "{:,.0f}".format(item['harga']) }}  {{ item['qty'] }} Rp{{ "{:,.0f}".format(item['subtotal']) }}
+{% endfor %}
+                    SUBTOTAL Rp{{"{:,.0f}".format(total) }}
+------------------------------------------------------------
+                      TOTAL = Rp{{"{:,.0f}".format(total) }}
+   DPP = Rp233.298,40  (sudah termasuk PPN)
+   PPN = Rp26.326,60
+------------------------------------------------------------
+   Jumlah yang harus dibayar
+                    Rp{{ "{:,.0f}".format(total) }}
+   Lima Ratus Dua Puluh Sembilan Ribu Enam Ratus Dua Puluh Lima Rupiah
+------------------------------------------------------------
+                 Customer
+               Toko MC MART
+        </pre>
+    </div>
+</body>
+</html>
