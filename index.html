@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Kasir - Web Version</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Login Page -->
+        <div id="loginPage" class="page active">
+            <div class="login-container">
+                <div class="login-box">
+                    <h1>KASIR APP</h1>
+                    <p>Sistem Kasir Modern</p>
+                    
+                    <div id="loginForm" class="form-section">
+                        <div class="form-group">
+                            <label>NIK (Nomor Induk Karyawan)</label>
+                            <input type="text" id="loginNik" placeholder="Masukkan NIK Anda">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="loginPassword" placeholder="Masukkan Password">
+                        </div>
+                        <button class="btn-primary" onclick="app.login()">Login</button>
+                        <button class="btn-secondary" onclick="app.showRegister()">Daftar</button>
+                    </div>
+                    
+                    <div id="registerForm" class="form-section hidden">
+                        <h2>Daftar Akun Baru</h2>
+                        <div class="form-group">
+                            <label>NIK</label>
+                            <input type="text" id="regNik" placeholder="Masukkan NIK">
+                        </div>
+                        <div class="form-group">
+                            <label>Nama</label>
+                            <input type="text" id="regNama" placeholder="Masukkan Nama">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="regPassword" placeholder="Masukkan Password">
+                        </div>
+                        <div class="form-group">
+                            <label>Konfirmasi Password</label>
+                            <input type="password" id="regConfirm" placeholder="Konfirmasi Password">
+                        </div>
+                        <button class="btn-primary" onclick="app.register()">Daftar</button>
+                        <button class="btn-secondary" onclick="app.showLogin()">Kembali</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Page -->
+        <div id="mainPage" class="page">
+            <!-- Header -->
+            <div class="header">
+                <h1>Aplikasi Kasir</h1>
+                <div class="header-right">
+                    <span>Selamat datang, <strong id="userName"></strong></span>
+                    <button class="btn-logout" onclick="app.logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="app.switchTab('transaksi')">💳 Transaksi</button>
+                <button class="tab-btn" onclick="app.switchTab('barang')">📦 Data Barang</button>
+                <button class="tab-btn" onclick="app.switchTab('pelanggan')">👥 Pelanggan</button>
+                <button class="tab-btn" onclick="app.switchTab('laporan')">📊 Laporan</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Transaksi Tab -->
+                <div id="transaksiTab" class="tab-pane active">
+                    <h2>Transaksi Penjualan</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tanggal</label>
+                            <input type="text" id="tglTransaksi" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>No. Invoice</label>
+                            <input type="text" id="noInvoice" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Pelanggan</label>
+                            <select id="pelangganSelect">
+                                <option value="">-- Pilih Pelanggan --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>Tambah Item</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Barang</label>
+                            <select id="barangSelect">
+                                <option value="">-- Pilih Barang --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Strata</label>
+                            <select id="strataSelect" onchange="app.updateHarga()">
+                                <option value="R">R (Retail)</option>
+                                <option value="WS">WS (Wholesaler)</option>
+                                <option value="SO">SO (Semi)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Harga</label>
+                            <input type="text" id="hargaDisplay" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Qty</label>
+                            <input type="number" id="qtyInput" min="1" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Diskon</label>
+                            <input type="number" id="diskonItemInput" min="0" value="0">
+                        </div>
+                        <div class="form-group" style="align-self: flex-end;">
+                            <button class="btn-primary" onclick="app.addItem()">Tambah</button>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>Item Transaksi</h3>
+                    <div class="table-container">
+                        <table id="itemsTable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Barang</th>
+                                    <th>Qty</th>
+                                    <th>Harga Satuan</th>
+                                    <th>Diskon</th>
+                                    <th>Subtotal</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="summary">
+                        <div class="summary-row">
+                            <label>Subtotal:</label>
+                            <input type="text" id="subtotalDisplay" readonly>
+                        </div>
+                        <div class="summary-row">
+                            <label>Diskon Total (Rp):</label>
+                            <input type="number" id="diskonTotalInput" min="0" value="0" onchange="app.updateTotal()">
+                        </div>
+                        <div class="summary-row">
+                            <label>Diskon (%):</label>
+                            <input type="number" id="diskonPctInput" min="0" max="100" value="0" onchange="app.updateDiskonPercentage()">
+                        </div>
+                        <div class="summary-row highlight">
+                            <label>Total:</label>
+                            <input type="text" id="totalDisplay" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Catatan</label>
+                        <textarea id="catatanInput" rows="3" placeholder="Catatan transaksi (opsional)"></textarea>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-secondary" onclick="app.clearForm()">Clear</button>
+                        <button class="btn-success" onclick="app.saveTransaksi()">Simpan Transaksi</button>
+                        <button class="btn-primary" onclick="app.printReceipt()">🖨️ Cetak</button>
+                        <button class="btn-info" onclick="app.exportPDF()">📄 Export PDF</button>
+                        <button class="btn-info" onclick="app.exportExcel()">📊 Export Excel</button>
+                    </div>
+                </div>
+
+                <!-- Data Barang Tab -->
+                <div id="barangTab" class="tab-pane">
+                    <h2>Data Barang</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Kode Barang</label>
+                            <input type="text" id="kodeBarang" placeholder="Masukkan Kode">
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Barang</label>
+                            <input type="text" id="namaBarang" placeholder="Masukkan Nama">
+                        </div>
+                        <div class="form-group">
+                            <label>Harga R (Retail)</label>
+                            <input type="number" id="hargaR" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Harga WS</label>
+                            <input type="number" id="hargaWS" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Harga SO</label>
+                            <input type="number" id="hargaSO" min="0" placeholder="0">
+                        </div>
+                        <div class="form-group" style="align-self: flex-end;">
+                            <button class="btn-primary" onclick="app.addBarang()">Tambah Barang</button>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="table-container">
+                        <table id="barangTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Kode</th>
+                                    <th>Nama</th>
+                                    <th>Harga R</th>
+                                    <th>Harga WS</th>
+                                    <th>Harga SO</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pelanggan Tab -->
+                <div id="pelangganTab" class="tab-pane">
+                    <h2>Data Pelanggan</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Pelanggan</label>
+                            <input type="text" id="namaPelanggan" placeholder="Masukkan Nama">
+                        </div>
+                        <div class="form-group">
+                            <label>Alamat</label>
+                            <input type="text" id="alamatPelanggan" placeholder="Masukkan Alamat">
+                        </div>
+                        <div class="form-group">
+                            <label>No. Telepon</label>
+                            <input type="text" id="telpPelanggan" placeholder="Masukkan No. Telepon">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipe</label>
+                            <select id="tipePelanggan">
+                                <option value="R">R (Retail)</option>
+                                <option value="WS">WS (Wholesaler)</option>
+                                <option value="SO">SO (Semi)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="align-self: flex-end;">
+                            <button class="btn-primary" onclick="app.addPelanggan()">Tambah Pelanggan</button>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="table-container">
+                        <table id="pelangganTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama</th>
+                                    <th>Alamat</th>
+                                    <th>No. Telp</th>
+                                    <th>Tipe</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Laporan Tab -->
+                <div id="laporanTab" class="tab-pane">
+                    <h2>Laporan Transaksi</h2>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-primary" onclick="app.refreshLaporan()">Refresh</button>
+                        <button class="btn-info" onclick="app.exportLaporanExcel()">Export Excel</button>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="table-container">
+                        <table id="laporanTable">
+                            <thead>
+                                <tr>
+                                    <th>No. Invoice</th>
+                                    <th>Tanggal</th>
+                                    <th>Pelanggan</th>
+                                    <th>Subtotal</th>
+                                    <th>Diskon</th>
+                                    <th>Total</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
